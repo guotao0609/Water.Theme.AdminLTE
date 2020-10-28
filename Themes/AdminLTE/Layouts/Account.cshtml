@@ -1,0 +1,136 @@
+﻿@using Microsoft.Extensions.Localization
+@using Microsoft.Extensions.Options
+@using Volo.Abp.AspNetCore.MultiTenancy
+@using Volo.Abp.AspNetCore.Mvc.AntiForgery
+@using Volo.Abp.AspNetCore.Mvc.UI.Components.LayoutHook
+@using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy.Localization
+@using Water.Theme.AdminLTE.Bundling
+@using Water.Theme.AdminLTE.Themes.AdminLTE.Components.MainNavbar
+@using Water.Theme.AdminLTE.Themes.AdminLTE.Components.PageAlerts
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Components
+@using Volo.Abp.MultiTenancy
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@using Volo.Abp.AspNetCore.Mvc.UI.Widgets.Components.WidgetScripts
+@using Volo.Abp.AspNetCore.Mvc.UI.Widgets.Components.WidgetStyles
+
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@inject IBrandingProvider BrandingProvider
+@inject IOptions<AbpMultiTenancyOptions> MultiTenancyOptions
+@inject ICurrentTenant CurrentTenant
+@inject IStringLocalizer<AbpUiMultiTenancyResource> MultiTenancyStringLocalizer
+@inject ITenantResolveResultAccessor TenantResolveResultAccessor
+
+@{ Layout = null;
+    AbpAntiForgeryManager.SetCookie();
+    var containerClass = ViewBag.FluidLayout == true ? "container-fluid" : "container"; }
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentCulture.Name">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>@(ViewBag.Title == null ? BrandingProvider.AppName : ViewBag.Title)</title>
+    @if (ViewBag.Description != null)
+    {
+<meta name="description" content="@(ViewBag.Description as string)" />}
+
+    <abp-style-bundle name="@AdminLTEThemeBundles.Styles.Global" />
+
+    @await Component.InvokeLayoutHookAsync(LayoutHooks.Head.Last, StandardLayouts.Account)
+    <style>
+        html, body, .container, .row {
+            height: 100%;
+        }
+
+        body {
+            background: #d2d6de;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            opacity: 0.7;
+        }
+
+        .abp-account-container, .abp-tenant-container {
+            box-shadow: #b5b5b5 10px 10px 200px;
+        }
+
+        .card-footer {
+            display: none;
+        }
+
+        .card-body {
+            padding: 0.5rem 1.25rem;
+            border-radius: 5px;
+        }
+
+        .login {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -190px;
+            width: 380px;
+        }
+    </style>
+    <script type="text/javascript">
+        var bodyBgs = [];
+        bodyBgs[0] = "/themes/adminlte/img/login_bg.png";
+        bodyBgs[1] = "/themes/adminlte/img/login_bg1.png";
+        bodyBgs[2] = "/themes/adminlte/img/login_bg2.png";
+        var randomBgIndex = Math.round(Math.random() * 2);
+        //输出随机的背景图
+        document.write('<style>body{background:url(' + bodyBgs[randomBgIndex] + '); background-size: cover; background-position: center;}</style>');
+    </script>
+</head>
+<body class="abp-account-layout bg-light text-sm" style="height:100%;">
+    <div class="@containerClass">
+        <abp-row>
+            <abp-column class="login">
+                <div class="login-logo">
+                    <a href="#" style=""><b style="color:#fff;">书店</b></a>
+                </div>
+                @if (MultiTenancyOptions.Value.IsEnabled &&
+                    (TenantResolveResultAccessor.Result?.AppliedResolvers?.Contains(CookieTenantResolveContributor.ContributorName) == true))
+                {
+    <div class="card abp-tenant-container  rounded mb-3">
+        <div class="card-body px-5" style="background-color: #eee;">
+            <div class="row">
+                <div class="col">
+                    <span style="font-size: .8em;" class="text-uppercase text-muted">@MultiTenancyStringLocalizer["Tenant"]</span><br />
+                    <h6 class="m-0 d-inline-block">
+                        @if (CurrentTenant.Id == null)
+                        {
+        <span>
+            @MultiTenancyStringLocalizer["NotSelected"]
+        </span> }
+    else
+    {
+<strong>@(CurrentTenant.Name ?? CurrentTenant.Id.Value.ToString())</strong>}
+                    </h6>
+                </div>
+                <div class="col-auto">
+                    <a id="AbpTenantSwitchLink" href="javascript:;" class="btn btn-sm mt-3 btn-outline-primary">@MultiTenancyStringLocalizer["Switch"]</a>
+                </div>
+            </div>
+        </div>
+    </div>            }
+                @(await Component.InvokeAsync<PageAlertsViewComponent>())
+                @await Component.InvokeLayoutHookAsync(LayoutHooks.PageContent.First, StandardLayouts.Account)
+                @RenderBody()
+                @await Component.InvokeLayoutHookAsync(LayoutHooks.PageContent.Last, StandardLayouts.Account)
+            </abp-column>
+        </abp-row>
+    </div>
+    <abp-script-bundle name="@AdminLTEThemeBundles.Scripts.Global" />
+
+    <script src="~/Abp/ApplicationConfigurationScript"></script>
+    <script src="~/Abp/ServiceProxyScript"></script>
+
+    @await RenderSectionAsync("scripts", false)
+
+    @await Component.InvokeAsync(typeof(WidgetScriptsViewComponent))
+
+    @await Component.InvokeLayoutHookAsync(LayoutHooks.Body.Last, StandardLayouts.Account)
+</body>
+</html>

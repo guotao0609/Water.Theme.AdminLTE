@@ -1,0 +1,76 @@
+
+.adminlte .card-header {
+    background-color: #f4f6f9;
+    border-bottom: 0px solid #f4f6f9;
+    padding: 1rem 0.1rem;
+}
+
+    .adminlte .card-header > .card-tools {
+        margin-right: 0rem;
+    }
+
+.adminlte .search-title {
+    background: #fff;
+}
+
+    .adminlte .search-title .card-title {
+        padding-left: 20px;
+        font-size: 1.2rem;
+    }
+
+.adminlte .search-body {
+    padding: 0.8rem 1.25rem;
+}
+
+    .adminlte .search-body .row {
+        margin-bottom: 1rem;
+    }
+
+.adminlte .search-bg {
+    background: #f4f6f9;
+    height: 10px;
+}
+
+.adminlte .card {
+    border: 0 solid #f4f6f9;
+    box-shadow: 0 0 0px #f4f6f9, 0 0px 0px #f4f6f9;
+    margin-bottom: 0rem !important;
+}
+
+    .adminlte .card .card-header .row h1, .adminlte .card .card-header .row h2,
+    .adminlte .card .card-header .row h3, .adminlte .card .card-header .row h4, .adminlte .card .card-header .row h5 {
+        font-size: 1.5rem;
+    }
+
+.adminlte .breadcrumbs {
+    padding: 10px 10px;
+    margin-bottom: 0;
+    background: none;
+    font-size: .85em;
+    opacity: .75;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: .25rem;
+    list-style: none;
+}
+
+    .adminlte .breadcrumbs .breadcrumb-item a {
+        color: #6c757d;
+    }
+
+.dataTable tr.shown td.details-control {
+    background: url('../img/details_close.png') no-repeat center center;
+}
+
+.dataTable td.details-control {
+    background: url('../img/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+
+.dataTables_scrollBody {
+    min-height: 280px;
+}
+
+.dataTables_length {
+    padding-top: 0.55em;
+}

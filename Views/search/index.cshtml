@@ -1,0 +1,84 @@
+﻿@*@page
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@model Abp.Web.Pages.Auditing.IndexModel
+@inherits Abp.Web.Pages.AbpPage
+@inject IPageLayout PageLayout
+@{
+    ViewData["Title"] = "审计日志管理";
+    PageLayout.Content.Title = L["Menu:Auditing"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Auditing"].Value);
+    PageLayout.Content.MenuItemName = "Joke.Auditing";
+}
+@section scripts
+    {
+    <abp-script src="/Pages/Admin/Auditing/index.js" />
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <h4>@L["Menu:Auditing"]</h4>
+
+            </abp-column>
+            <abp-column size-md="_6" class="text-right">
+
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+
+    <abp-card>
+        <abp-card-header class="search-title">
+            <h3 class="card-title">
+                搜索
+            </h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+            </div>
+        </abp-card-header>
+        <abp-card-body class="search-body">
+            <abp-row>
+                <abp-column size-sm="_4">
+                    <input type="text" class="form-control" id="UserName" placeholder="UserName">
+                </abp-column>
+                <abp-column size-sm="_4">
+                    <select class="form-control" id="HttpStatusCode" asp-items="Html.GetEnumSelectList<System.Net.HttpStatusCode>()">
+            <option value="">HttpStatusCode</option>
+        </select>
+                </abp-column>
+                <abp-column size-sm="_4">
+                    <input type="text" class="form-control" id="HttpMethod" placeholder="HttpMethod">
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size-sm="_4">
+                    <button type="button" id="search" class="btn btn-primary btn-search">
+                        <i class="fa fa-search"></i>
+                        @L["Search"].Value
+                    </button>
+                </abp-column>
+            </abp-row>
+        </abp-card-body>
+        <abp-row class="search-bg"></abp-row>
+    </abp-card>
+  
+    <abp-card-body>
+        <abp-table striped-rows="true" id="Auditing">
+            <thead Theme="Light">
+                <tr>
+                    <th></th>
+                    <th>@L["UserName"]</th>
+                    <th>@L["ExecutionTime"]</th>
+                    <th>@L["ExecutionDuration"]</th>
+                    <th>@L["ClientIpAddress"]</th>
+                    <th>@L["HttpStatusCode"]</th>
+                    <th>@L["HttpMethod"]</th>
+                    <th>@L["Url"]</th>
+
+                </tr>
+            </thead>
+        </abp-table>
+    </abp-card-body>
+</abp-card>*@
+
